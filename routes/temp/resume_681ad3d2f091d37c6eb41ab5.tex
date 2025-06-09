@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=0.75in}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
+\titleformat{\section}{\Large\bfseries\sffamily\color{black}}{}{0em}{\MakeUppercase}[\titlerule]
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\pagestyle{empty}
+
+% Custom commands for resume
+\newcommand{\resumeHeader}[4]{
+  \begin{center}
+    {\Huge\sffamily\bfseries #1} \\
+    \vspace{2pt}
+    {\large\sffamily #2} \\
+    \vspace{3pt}
+    {\normalsize #3 \textbullet\ #4}
+  \end{center}
+}
+
+\newcommand{\resumeSection}[1]{
+  \section{#1}
+}
+
+\newcommand{\resumeItem}[4]{
+  \vspace{2pt}
+  \item \textbf{#1} \hfill \textit{#2} \\
+  \textit{#3} \\
+  #4
+}
+
+\newcommand{\resumeEduItem}[3]{
+  \vspace{2pt}
+  \item \textbf{#1} \hfill \textit{#2} \\
+  \textit{#3}
+}
+
+\newcommand{\resumeCertItem}[2]{
+  \vspace{2pt}
+  \item \textbf{#1} \hfill \textit{#2}
+}
+
+\begin{document}
+
+\resumeHeader{Vaibhav Bhatt}{Full Stack Developer}{vaibhavbhatt2022@gmail.com \textbullet\ +919313888538 \textbullet\ Bengaluru}{}
+
+
+\resumeSection{Summary}
+As a Full Stack Developer with a passion for creating dynamic and responsive web applications, I bring a diverse skill set that includes JavaScript, React, Vue.js, Node.js, Java, and Python. My experience spans both front-end and back-end development, allowing me to build seamless user experiences while ensuring robust server-side functionality. I thrive in collaborative environments and am committed to delivering high-quality code and innovative solutions. Eager to contribute my expertise to a forward-thinking team, I am dedicated to continuous learning and staying updated with the latest industry trends.
+
+
+
+\resumeSection{Skills}
+\begin{itemize}[nosep]
+  \item JavaScript, React, Vue.js, Node.js, Java, Python
+\end{itemize}
+
+
+
+\resumeSection{Experience}
+\begin{itemize}[nosep]
+
+\resumeItem
+  {frontedn developer}
+  {bhatt}
+  {2025-06 -- 2025-07}
+  {iusdiuasdsbad aksjdbkja daskj}
+      
+\end{itemize}
+
+
+
+\resumeSection{Education}
+\begin{itemize}[nosep]
+
+\resumeEduItem
+  {MCA}
+  {UTU}
+  {2024}
+      
+\end{itemize}
+
+
+
+\resumeSection{Certifications}
+\begin{itemize}[nosep]
+
+\resumeCertItem
+  {AWS}
+  {2025}
+      
+\resumeCertItem
+  {akfi}
+  {2025}
+      
+\end{itemize}
+
+
+\end{document}
