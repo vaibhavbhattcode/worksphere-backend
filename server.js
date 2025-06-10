@@ -94,9 +94,9 @@ const userSessionMiddleware = session({
     collectionName: "userSessions",
   }),
   cookie: {
-    secure: process.env.NODE_ENV === "production",
+    secure: true, // ✅ for HTTPS
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "None", // ✅ for cross-site cookie sharing
     maxAge: 24 * 60 * 60 * 1000,
   },
 });
