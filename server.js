@@ -1,5 +1,4 @@
 // server.js
-const isProduction = process.env.NODE_ENV === "production";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -43,9 +42,9 @@ app.use(express.json());
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL, // from .env (set to your Vercel domain)
-  "https://worksphere-beige.vercel.app", // fallback in case .env is missing
+  process.env.FRONTEND_URL,
+  "https://worksphere-beige.vercel.app", // fallback
+  "http://localhost:3000", // for local dev
 ];
 
 app.use(
@@ -57,18 +56,20 @@ app.use(
         callback(new Error("Not allowed by CORS: " + origin));
       }
     },
-    credentials: true, // ✅ this is crucial for cookies/sessions
+    credentials: true, // ✅ required for cookie/session
+
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 const commonCookieSettings = {
-  secure: isProduction, // ✅ only true in production (HTTPS)
+  secure: isProduction,
   httpOnly: true,
-  sameSite: isProduction ? "None" : "Lax", // ✅ cross-site in prod, safe locally
-  maxAge: 24 * 60 * 60 * 1000, // 1 day
+  sameSite: isProduction ? "None" : "Lax",
+  maxAge: 24 * 60 * 60 * 1000,
 };
+const isProduction = process.env.NODE_ENV === "production";
 
 app.use(
   "/uploads",
