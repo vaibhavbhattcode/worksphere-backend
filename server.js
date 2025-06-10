@@ -37,6 +37,7 @@ import { isUserAuthenticated } from "./middleware/userAuthMiddleware.js";
 connectDB();
 
 const app = express();
+const isProduction = process.env.NODE_ENV === "production";
 
 app.use(express.json());
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
@@ -69,7 +70,6 @@ const commonCookieSettings = {
   sameSite: isProduction ? "None" : "Lax",
   maxAge: 24 * 60 * 60 * 1000,
 };
-const isProduction = process.env.NODE_ENV === "production";
 
 app.use(
   "/uploads",
