@@ -65,6 +65,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+console.log("Running in production?", isProduction); // Add this line to be 100% sure
 
 const commonCookieSettings = {
   secure: isProduction,
