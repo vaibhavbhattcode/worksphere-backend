@@ -59,12 +59,12 @@ app.use(
         callback(new Error("Not allowed by CORS: " + origin));
       }
     },
-    credentials: true, // ✅ required for cookie/session
-
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 console.log("Running in production?", isProduction); // Add this line to be 100% sure
 
 const commonCookieSettings = {
