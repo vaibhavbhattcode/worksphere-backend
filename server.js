@@ -1,4 +1,5 @@
 // server.js
+const isProduction = process.env.NODE_ENV === "production";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -42,10 +43,8 @@ app.use(express.json());
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:3000",
-  "https://worksphere-beige.vercel.app",
-  "https://worksphere-frygb60l8-vaibhavbhatt2022-gmailcoms-projects.vercel.app",
+  "http://localhost:3000", // local frontend
+  process.env.FRONTEND_URL, // production frontend (Vercel)
 ];
 
 app.use(
@@ -59,9 +58,16 @@ app.use(
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    credentials: true, // ✅ must be true for session cookies
   })
 );
+
+const commonCookieSettings = {
+  secure: isProduction, // ✅ only true in production (HTTPS)
+  httpOnly: true,
+  sameSite: isProduction ? "None" : "Lax", // ✅ cross-site in prod, safe locally
+  maxAge: 24 * 60 * 60 * 1000, // 1 day
+};
 
 app.use(
   "/uploads",
@@ -86,55 +92,40 @@ const limiter = rateLimit({
 // Session middleware for “users” (end‐users)
 const userSessionMiddleware = session({
   name: "user.sid",
-  secret: process.env.SESSION_SECRET || "default_secret",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
     collectionName: "userSessions",
   }),
-  cookie: {
-    secure: true, // ✅ for HTTPS
-    httpOnly: true,
-    sameSite: "None", // ✅ for cross-site cookie sharing
-    maxAge: 24 * 60 * 60 * 1000,
-  },
+  cookie: commonCookieSettings,
 });
 
 // Session middleware for “companies”
 const companySessionMiddleware = session({
   name: "company.sid",
-  secret: process.env.SESSION_SECRET_COMPANY || "default_company_secret",
+  secret: process.env.SESSION_SECRET_COMPANY,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
     collectionName: "companySessions",
   }),
-  cookie: {
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000,
-  },
+  cookie: commonCookieSettings,
 });
 
 // Session middleware for “admins”
 const adminSessionMiddleware = session({
   name: "admin.sid",
-  secret: process.env.SESSION_SECRET_ADMIN || "default_admin_secret",
+  secret: process.env.SESSION_SECRET_ADMIN,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
     collectionName: "adminSessions",
   }),
-  cookie: {
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000,
-  },
+  cookie: commonCookieSettings,
 });
 
 // ───────────────────────────────────────────────────────────────────────────
