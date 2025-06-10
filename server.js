@@ -37,6 +37,8 @@ import { isUserAuthenticated } from "./middleware/userAuthMiddleware.js";
 connectDB();
 
 const app = express();
+app.set("trust proxy", 1); // ✅ Add this line
+
 const isProduction = process.env.NODE_ENV === "production";
 
 app.use(express.json());
