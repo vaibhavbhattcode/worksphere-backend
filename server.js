@@ -43,8 +43,9 @@ app.use(express.json());
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 const allowedOrigins = [
-  "http://localhost:3000", // local frontend
-  process.env.FRONTEND_URL, // production frontend (Vercel)
+  "http://localhost:3000",
+  process.env.FRONTEND_URL, // from .env (set to your Vercel domain)
+  "https://worksphere-beige.vercel.app", // fallback in case .env is missing
 ];
 
 app.use(
@@ -53,12 +54,12 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error("Not allowed by CORS: " + origin));
       }
     },
+    credentials: true, // ✅ this is crucial for cookies/sessions
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // ✅ must be true for session cookies
   })
 );
 
